@@ -22,7 +22,7 @@
 
 程序和数据分离，建议将数据分门别类存在工作目录的不同文件夹中
 
-遵守统一、公认的格式规范，更多内容参见 [MATLAB Style Guidelines 2.0](http://www.datatool.com/downloads/matlab_style_guidelines.pdf)
+遵守统一、公认的格式规范，更多内容参见 [MATLAB Programming Style Guidelines](http://www.datatool.com/downloads/matlab_style_guidelines.pdf)
 
 使用版本控制工具（推荐 git）
 
