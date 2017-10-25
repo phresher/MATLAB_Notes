@@ -1,7 +1,7 @@
 function tf = isLeapYear(year)
 % Determine if input is a leap year.
 
-if (abs(year - fix(year)) ~= 0) || (year <= 0)
+if (year - fix(year) ~= 0) || (year <= 0)
     error('illegal input.');
 end
 
