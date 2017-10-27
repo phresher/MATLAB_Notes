@@ -61,12 +61,46 @@ B = medfilt2(A);
 J = deconvwnr(I,PSF,NSR);
 ```
 
+延伸阅读[matlab 磨皮](https://www.zhihu.com/question/27780598)
 
 ### 图像分析
 
 边缘检测
 
+edge 函数检测边缘
 
+```matlab
+% 不同检测方法的效果对比，请看文档
+BW = edge(I);
+```
+
+bwboundaries 函数识别闭合区域
+
+```matlab
+I = imread('rice.png');
+BW = edge(I);
+imshow(BW);
+B = bwboundaries(imbinarize(I));
+imshow(B);
+for k = 1:length(B)
+   boundary = B{k};
+   plot(boundary(:,2), boundary(:,1), 'w', 'LineWidth', 2)
+end
+```
+
+imfindcircles 函数，寻找给定半径的圆
+
+查看统计信息
+
+imhist 函数查看直方图
+
+corr2 函数计算两张个矩阵的相关系数
+
+更多统计图片信息的函数参见文档 Region and Image Properties
+
+图像变换和图像压缩
+
+离散余弦变换，dctmtx 函数，参见文档 Discrete Cosine Transform
 
 ### 家庭作业
 
