@@ -36,14 +36,22 @@ fork 并 clone 本课程在 GitHub 上的 repo
 
 ### 一个爬虫程序
 
-使用现成的函数完成这个任务，注意上述习惯和思想
+根据期刊的 ISSN 查找它的影响因子。这些待查找的 ISSN 值记录在 homework/qinghua.xls 文件中。将查好的影响因子记录在这个表格的第三列。
+
+在 homework 文件夹中新建一个脚本，在脚本中使用 searchImpactFactor.m 函数完成这个任务。
 
 ### 使用 git 上传课堂作业
 
-将刚写好的文件添加（add）到 git
+将刚写好的脚本添加（add）到 git
 
 提交（commit）修改
 
 推送（push）到远程服务器
 
 在 GitHub 上提交 pull request
+
+### 家庭作业
+
+阅读 MATLAB Programming Style Guidelines
+
+完成课堂上提到的程序
