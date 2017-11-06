@@ -95,3 +95,7 @@ help title
 ### 家庭作业
 
 阅读 MATLAB Examples 中的 Mathematics 和 Graphics
+
+完成判断闰年的程序
+
+完成冒泡排序、插入排序、选择排序和堆排序
