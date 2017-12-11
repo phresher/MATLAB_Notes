@@ -22,10 +22,12 @@
 
 畸变是一种由镜头引起的像差，有三种类型：桶型、枕型和混合型，如下图
 
-![桶型畸变](./resouces/150px-Barrel_distortion.svg.png)
+![桶型畸变](resources/150px-Barrel_distortion.svg.png)
 
-![枕型畸变](resouces/150px-Pincushion_distortion.svg.png)
+![枕型畸变](resources/150px-Pincushion_distortion.svg.png)
 
-![混合型畸变](150px-Mustache_distortion.svg.png)
+![混合型畸变](resources/150px-Mustache_distortion.svg.png)
 
 ## 家庭作业
+
+阅读维基百科[Distortion (optics)](https://en.wikipedia.org/wiki/Distortion_(optics))
