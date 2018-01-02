@@ -30,10 +30,11 @@ showExtrinsics(params, 'PatternCentric');
 % legend('Detected Points','ReprojectedPoints');
 % hold off;
 %% detection and recognition
-featurePoints = detectFeaturePoints(imageFileNames{1});
-% featurePoints = undistortPoints(featurePoints,params);
+
 images = imageSet(fullfile('images','tubes'));
 imageFileNames = images.ImageLocation;
+featurePoints = detectFeaturePoints(imageFileNames);
+% featurePoints = undistortPoints(featurePoints,params);
 [imagePoints,worldPoints] = generatePointPairs(imageFileNames);
 [R,t] = extrinsics(imagePoints(:,:,1),worldPoints,params); % !!
 worldFeaturePoins = pointsToWorld(params,R,t,featurePoints);
