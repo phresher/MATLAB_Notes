@@ -1,53 +1,58 @@
-% function demo
-% Read the water level in pressure tubes with the test data.
-% todos:
-% 1. replace the calibration image set with checkerboard images.
-% 2. add the experiment images with wood granuals.
-% 3. develop the algorithm used in detectFeaturePoints and test it with the
-% experiment images above.
+% Read water level in pressure tubes with the test data.
 
 addpath('source');
 addpath('data');
+dataExistFlag = exist('demo.mat', 'file');
 %% calibration
 % the images should be replaced by checherboard images.
 images = imageSet(fullfile('images','calibration'));
 imageFileNames = images.ImageLocation;
 % the imagePoints and worldPoints should be replaced.
-[imagePoints,worldPoints] = generatePointPairs(imageFileNames);
-params = estimateCameraParameters(imagePoints,worldPoints, ...
-    'ImageSize',[3968,2240]);
+[checkerboardImagePoints, boardSize] = detectCheckerboardPoints(imageFileNames);
+squareSizeInMM = 61;
+checkerboardWorldPoints = generateCheckerboardPoints(boardSize,squareSizeInMM);
+params = estimateCameraParameters(checkerboardImagePoints, ...
+    checkerboardWorldPoints, 'ImageSize',[5472,3648]);
 % check reprojection errors
 showReprojectionErrors(params);
 % check camera positions
 figure;
 showExtrinsics(params, 'PatternCentric');
 % check reprojected points
-% figure;
-% imshow(imageFileNames{1});
-% hold on;
-% plot(imagePoints(:,1,1), imagePoints(:,2,1),'go');
-% plot(params.ReprojectedPoints(:,1,1),params.ReprojectedPoints(:,2,1),'r+');
-% legend('Detected Points','ReprojectedPoints');
-% hold off;
-%% detection and recognition
-
-images = imageSet(fullfile('images','tubes'));
-imageFileNames = images.ImageLocation;
-featurePoints = detectFeaturePoints(imageFileNames);
-% featurePoints = undistortPoints(featurePoints,params);
-[imagePoints,worldPoints] = generatePointPairs(imageFileNames);
-[R,t] = extrinsics(imagePoints(:,:,1),worldPoints,params); % !!
-worldFeaturePoins = pointsToWorld(params,R,t,featurePoints);
-%
-tubeParams.startPoint = 25;
-tubeParams.interval = 19;
-[iTube, waterLevel] = pointsToWaterLevels(worldFeaturePoins, tubeParams);
 figure;
-plot(iTube, waterLevel, 'ro');
-position = [featurePoints(:,1,1) - 10 ...
-    featurePoints(:,2,1) - 5 ...
-    20*ones(size(featurePoints, 1),1) ...
-    10*ones(size(featurePoints, 1),1)];
-RGB = imread(images.ImageLocation{1});
-RGB = insertObjectAnnotation(RGB,'rectangle',position,waterLevel);
-imshow(RGB);
+imshow(imageFileNames{1});
+hold on;
+plot(checkerboardImagePoints(:,1,1), checkerboardImagePoints(:,2,1),'go');
+plot(params.ReprojectedPoints(:,1,1),params.ReprojectedPoints(:,2,1),'r+');
+legend('Detected Points','ReprojectedPoints');
+hold off;
+%% detection and recognition
+tubeImages = imageSet(fullfile('images','tubes'));
+tubeImageFileNames = tubeImages.ImageLocation;
+I = imread(tubeImageFileNames{1});
+% [corrI, ~] = undistortImage(I,params);
+% tic
+featurePoints = detectFeaturePoints(I);
+% toc
+if dataExistFlag == 0
+    [tubeImagePoints, tubeWorldPoints] = generatePointPairs(tubeImageFileNames);
+else
+    load('demo.mat', 'tubeImagePoints', 'tubeWorldPoints');
+end
+[R,t] = extrinsics(tubeImagePoints,tubeWorldPoints,params); % !!
+worldFeaturePoints = pointsToWorld(params,R,t,featurePoints);
+% select valid water levels and correct
+tubeParams.startPoint = 5;
+tubeParams.interval = 18;
+tubeParams.height = 1000;
+tubeParams.waterLevelCorrFactor = [1 17];
+[iTube, waterLevel] = pointsToWaterLevels(worldFeaturePoints, tubeParams);
+%% error analysis
+if dataExistFlag ~= 0
+    load('demo.mat', 'waterLevelByRuler')
+    figure;
+    plot(iTube, waterLevel, 'r.', iTube, waterLevelByRuler, 'bo');
+    legend('by computer vision','by ruler');
+    xlabel('index of piezometer tubes');
+    ylabel('water level (mm)');
+end

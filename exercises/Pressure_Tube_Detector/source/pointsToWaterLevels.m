@@ -1,10 +1,15 @@
 function [iTube, waterLevel] = pointsToWaterLevels(worldFeaturePoins, tubeParams)
 %
-iTube = round((worldFeaturePoins(:,1)-tubeParams.startPoint) ...
-    /tubeParams.interval);
-if exist('tubeParams.waterLevelCorrFactor', 'var')
-    waterLevel = worldFeaturePoins(:,2)*tubeParams.waterLevelCorrFactor(1) ...
+% x = worldFeaturePoins(:,1);
+y = worldFeaturePoins(:,2);
+% x=x(y<tubeParams.height);
+y=y(y<tubeParams.height);
+% x=x(y>0);
+y=y(y>0);
+iTube = 1:length(y);
+if isfield(tubeParams, 'waterLevelCorrFactor')
+    waterLevel = y*tubeParams.waterLevelCorrFactor(1) ...
         + tubeParams.waterLevelCorrFactor(2);
 else
-    waterLevel = worldFeaturePoins(:,2);
+    waterLevel = y;
 end
